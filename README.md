@@ -1,1 +1,1 @@
-# geoai-idss
+# brinathon-idss-banjarmasin
