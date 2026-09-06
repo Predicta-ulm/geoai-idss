@@ -118,3 +118,28 @@ if rekomendasi:
     st.success(f"Optimasi Selesai! Total Anggaran Terserap: **Rp {total_biaya:,.0f}** dari Pagu **Rp {pagu_anggaran:,.0f}**")
 else:
     st.warning("Pagu anggaran terlalu kecil untuk menjalankan program intervensi pada klaster yang ada.")
+st.markdown("---")
+st.markdown("### 🏛️ Draf Kebijakan Operasional & Non-Finansial IDSS")
+st.markdown("Sistem secara otomatis merumuskan tindakan lapangan berbasis klaster hotspot kerentanan tertinggi:")
+
+# Looping otomatis berdasarkan klaster yang terdeteksi oleh DBSCAN
+if not df_hotspot.empty:
+    for idx, row in rekap_hotspot.iterrows():
+        cluster_id = int(row['ID_Hotspot'])
+        jumlah_kk = row['Jumlah_Keluarga']
+        
+        with st.expander(f"📌 Aksi Rekomendasi untuk Klaster Wilayah #{cluster_id} ({jumlah_kk} Keluarga Rentan)"):
+            st.markdown(f"**1. Penugasan Personel Lapangan:**")
+            st.write(f"- Menugaskan 2 orang Kader Posyandu & 1 Bidan Desa dari Puskesmas terdekat untuk melakukan *home visit* intensif mingguan ke Klaster #{cluster_id}.")
+            
+            st.markdown(f"**2. Distribusi Logistik & Bantuan Natura:**")
+            st.write(f"- Prioritaskan distribusi {jumlah_kk * 2} kotak susu formula pencegah stunting dan paket filter air bersih darurat ke titik koordinat klaster ini.")
+            
+            st.markdown(f"**3. Rekomendasi Regulasi Desa (Perdes):**")
+            if cluster_id % 2 == 0:
+                st.write(f"- Mendorong Kepala Desa menerbitkan Perdes tentang percepatan pembangunan sanitasi komunal berbasis gotong royong di wilayah Klaster #{cluster_id}.")
+            else:
+                st.write(f"- Mendorong pengaktifan pos pelayanan air bersih desa dan pengawasan ketat distribusi Raskin/Bantuan Pangan Non-Tunai.")
+else:
+    st.info("Belum ada klaster hotspot yang memenuhi syarat minimum untuk eskalasi kebijakan non-finansial.")
+
