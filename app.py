@@ -14,7 +14,7 @@ st.markdown("---")
 # 1. Load Data dari GitHub (Pastikan file CSV sudah ada di repo GitHub Anda)
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/Predicta-ulm/brinathon-idss-banjarmasin/main/data_dummy_banjarmasin.csv"
+    url = "https://raw.githubusercontent.com/Predicta-ulm/geoai-idss/refs/heads/main/data_dummy_banjarmasin.csv"
     return pd.read_csv(url)
 
 try:
