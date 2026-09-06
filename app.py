@@ -78,7 +78,6 @@ col1.metric("Total Keluarga Terdata", f"{len(df)} KK")
 col2.metric("Keluarga Kategori Rentan", f"{len(df_rentan)} KK")
 col3.metric("Hotspot Rawan Ditemukan", f"{jumlah_hotspot} Klaster")
 
-st.markdown("### 🗺️ Peta Sebaran Klaster Hotspot Kerentanan")
 import folium
 from streamlit_folium import st_folium
 
