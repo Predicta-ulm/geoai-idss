@@ -1,0 +1,151 @@
+ID_Keluarga,Kecamatan,Kelurahan,Risiko_Stunting,Kemiskinan_Ekstrem,Sanitasi_Buruk,Akses_Air_Minim,Latitude,Longitude
+KK-BJM-001,Banjarmasin Tengah,Pekapuran Laut,0,1,1,0,-3.348249,114.577503
+KK-BJM-002,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.298447,114.61767
+KK-BJM-003,Banjarmasin Tengah,Pekapuran Laut,0,1,1,0,-3.308666,114.553178
+KK-BJM-004,Banjarmasin Selatan,Kelayan Dalam,0,0,0,0,-3.333714,114.610202
+KK-BJM-005,Banjarmasin Tengah,Pekapuran Laut,0,0,0,0,-3.299879,114.620132
+KK-BJM-006,Banjarmasin Timur,Sungai Lulut,1,0,1,0,-3.318555,114.577819
+KK-BJM-007,Banjarmasin Selatan,Kelayan Dalam,0,0,1,0,-3.30113,114.584025
+KK-BJM-008,Banjarmasin Selatan,Kelayan Dalam,0,1,1,0,-3.282995,114.583659
+KK-BJM-009,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.34323,114.634749
+KK-BJM-010,Banjarmasin Tengah,Melayu,0,1,0,0,-3.293501,114.622973
+KK-BJM-011,Banjarmasin Tengah,Pekapuran Laut,0,0,0,1,-3.281882,114.587853
+KK-BJM-012,Banjarmasin Tengah,Melayu,1,1,1,0,-3.291942,114.611852
+KK-BJM-013,Banjarmasin Timur,Benua Anyar,0,0,0,0,-3.33654,114.556956
+KK-BJM-014,Banjarmasin Tengah,Pekapuran Laut,0,0,1,0,-3.295885,114.648522
+KK-BJM-015,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.323391,114.595341
+KK-BJM-016,Banjarmasin Timur,Sungai Lulut,1,0,0,1,-3.324087,114.570951
+KK-BJM-017,Banjarmasin Timur,Benua Anyar,0,0,1,0,-3.284434,114.614804
+KK-BJM-018,Banjarmasin Tengah,Pasar Lama,0,1,1,0,-3.33802,114.622913
+KK-BJM-019,Banjarmasin Selatan,Pemurus Dalam,1,0,1,0,-3.323438,114.648952
+KK-BJM-020,Banjarmasin Tengah,Pasar Lama,1,0,1,1,-3.311014,114.618461
+KK-BJM-021,Banjarmasin Selatan,Kelayan Dalam,1,0,0,0,-3.292474,114.630505
+KK-BJM-022,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.345367,114.641314
+KK-BJM-023,Banjarmasin Tengah,Pasar Lama,1,0,1,0,-3.327973,114.615544
+KK-BJM-024,Banjarmasin Timur,Benua Anyar,1,0,0,0,-3.31788,114.576488
+KK-BJM-025,Banjarmasin Selatan,Mantuil,1,1,1,0,-3.310704,114.576274
+KK-BJM-026,Banjarmasin Tengah,Melayu,1,0,1,0,-3.287152,114.58994
+KK-BJM-027,Banjarmasin Selatan,Kelayan Dalam,1,0,0,0,-3.314333,114.559091
+KK-BJM-028,Banjarmasin Selatan,Kelayan Dalam,1,1,1,0,-3.339301,114.565998
+KK-BJM-029,Banjarmasin Tengah,Melayu,0,0,0,0,-3.308251,114.588477
+KK-BJM-030,Banjarmasin Tengah,Melayu,1,0,0,0,-3.312962,114.647108
+KK-BJM-031,Banjarmasin Selatan,Mantuil,1,1,1,0,-3.299549,114.618171
+KK-BJM-032,Banjarmasin Tengah,Melayu,0,0,0,0,-3.296198,114.584018
+KK-BJM-033,Banjarmasin Timur,Pekapuran Raya,0,0,0,1,-3.338929,114.550325
+KK-BJM-034,Banjarmasin Tengah,Pasar Lama,0,0,0,1,-3.331563,114.600059
+KK-BJM-035,Banjarmasin Selatan,Mantuil,1,0,1,0,-3.286116,114.637052
+KK-BJM-036,Banjarmasin Timur,Benua Anyar,0,0,1,0,-3.314464,114.569891
+KK-BJM-037,Banjarmasin Timur,Sungai Lulut,1,0,0,0,-3.312243,114.627863
+KK-BJM-038,Banjarmasin Tengah,Pekapuran Laut,0,0,0,0,-3.308074,114.598861
+KK-BJM-039,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.288489,114.633167
+KK-BJM-040,Banjarmasin Timur,Sungai Lulut,0,1,0,0,-3.345945,114.637801
+KK-BJM-041,Banjarmasin Selatan,Kelayan Dalam,1,1,0,0,-3.298766,114.631602
+KK-BJM-042,Banjarmasin Tengah,Pekapuran Laut,0,0,0,0,-3.341013,114.597528
+KK-BJM-043,Banjarmasin Tengah,Pekapuran Laut,0,1,1,0,-3.331446,114.637243
+KK-BJM-044,Banjarmasin Timur,Sungai Lulut,1,1,1,1,-3.284976,114.625527
+KK-BJM-045,Banjarmasin Tengah,Pekapuran Laut,0,0,1,0,-3.300094,114.589899
+KK-BJM-046,Banjarmasin Tengah,Pasar Lama,0,0,0,0,-3.323861,114.639961
+KK-BJM-047,Banjarmasin Timur,Sungai Lulut,1,0,1,0,-3.332647,114.556403
+KK-BJM-048,Banjarmasin Selatan,Mantuil,1,0,1,0,-3.311225,114.608844
+KK-BJM-049,Banjarmasin Selatan,Kelayan Dalam,0,0,0,0,-3.300451,114.555887
+KK-BJM-050,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.289826,114.557086
+KK-BJM-051,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.303172,114.571424
+KK-BJM-052,Banjarmasin Selatan,Mantuil,0,0,1,0,-3.284514,114.607104
+KK-BJM-053,Banjarmasin Timur,Sungai Lulut,1,0,1,1,-3.295077,114.63075
+KK-BJM-054,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.343215,114.593105
+KK-BJM-055,Banjarmasin Timur,Pekapuran Raya,1,1,0,0,-3.317308,114.622908
+KK-BJM-056,Banjarmasin Tengah,Pasar Lama,0,0,0,1,-3.281108,114.559842
+KK-BJM-057,Banjarmasin Timur,Benua Anyar,0,0,0,0,-3.326249,114.636167
+KK-BJM-058,Banjarmasin Selatan,Kelayan Dalam,1,0,0,1,-3.336685,114.594861
+KK-BJM-059,Banjarmasin Timur,Sungai Lulut,0,0,1,0,-3.330502,114.574981
+KK-BJM-060,Banjarmasin Selatan,Pemurus Dalam,1,1,1,1,-3.293438,114.635597
+KK-BJM-061,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.30435,114.604059
+KK-BJM-062,Banjarmasin Selatan,Kelayan Dalam,1,0,0,0,-3.285154,114.63487
+KK-BJM-063,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.316005,114.571375
+KK-BJM-064,Banjarmasin Timur,Sungai Lulut,0,0,0,0,-3.338475,114.550216
+KK-BJM-065,Banjarmasin Timur,Pekapuran Raya,1,0,0,0,-3.285144,114.628513
+KK-BJM-066,Banjarmasin Timur,Pekapuran Raya,0,0,1,0,-3.301239,114.623051
+KK-BJM-067,Banjarmasin Tengah,Pasar Lama,1,0,1,0,-3.299711,114.56548
+KK-BJM-068,Banjarmasin Timur,Sungai Lulut,1,0,1,0,-3.28219,114.607918
+KK-BJM-069,Banjarmasin Tengah,Pekapuran Laut,1,0,1,1,-3.297642,114.555717
+KK-BJM-070,Banjarmasin Tengah,Melayu,0,0,0,0,-3.3148,114.635272
+KK-BJM-071,Banjarmasin Selatan,Kelayan Dalam,1,0,1,0,-3.282745,114.558011
+KK-BJM-072,Banjarmasin Selatan,Kelayan Dalam,0,0,1,0,-3.308348,114.617521
+KK-BJM-073,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.341608,114.639029
+KK-BJM-074,Banjarmasin Selatan,Mantuil,1,0,1,0,-3.308384,114.611938
+KK-BJM-075,Banjarmasin Timur,Benua Anyar,0,0,0,0,-3.309143,114.602278
+KK-BJM-076,Banjarmasin Timur,Sungai Lulut,0,0,1,0,-3.303119,114.581418
+KK-BJM-077,Banjarmasin Timur,Pekapuran Raya,0,0,0,1,-3.340839,114.61455
+KK-BJM-078,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.284969,114.643573
+KK-BJM-079,Banjarmasin Selatan,Pemurus Dalam,0,0,1,0,-3.306519,114.606299
+KK-BJM-080,Banjarmasin Selatan,Kelayan Dalam,0,0,0,1,-3.312366,114.600588
+KK-BJM-081,Banjarmasin Selatan,Pemurus Dalam,0,1,1,0,-3.28834,114.637927
+KK-BJM-082,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.338958,114.633374
+KK-BJM-083,Banjarmasin Tengah,Melayu,1,0,1,0,-3.307183,114.648723
+KK-BJM-084,Banjarmasin Tengah,Pasar Lama,1,0,1,0,-3.349452,114.63171
+KK-BJM-085,Banjarmasin Timur,Benua Anyar,1,1,0,0,-3.342749,114.637813
+KK-BJM-086,Banjarmasin Timur,Sungai Lulut,1,1,0,0,-3.28772,114.624242
+KK-BJM-087,Banjarmasin Selatan,Pemurus Dalam,1,1,1,0,-3.330277,114.571063
+KK-BJM-088,Banjarmasin Timur,Sungai Lulut,1,0,1,0,-3.301875,114.635291
+KK-BJM-089,Banjarmasin Tengah,Melayu,1,1,0,0,-3.332422,114.640816
+KK-BJM-090,Banjarmasin Selatan,Kelayan Dalam,1,0,1,1,-3.3056,114.632935
+KK-BJM-091,Banjarmasin Selatan,Kelayan Dalam,0,0,0,0,-3.326651,114.563082
+KK-BJM-092,Banjarmasin Timur,Sungai Lulut,0,0,1,1,-3.298114,114.605168
+KK-BJM-093,Banjarmasin Timur,Benua Anyar,0,0,0,0,-3.349323,114.557524
+KK-BJM-094,Banjarmasin Tengah,Pekapuran Laut,1,0,0,0,-3.311809,114.63346
+KK-BJM-095,Banjarmasin Tengah,Pasar Lama,1,0,0,0,-3.339633,114.562745
+KK-BJM-096,Banjarmasin Timur,Pekapuran Raya,0,0,1,0,-3.287071,114.629612
+KK-BJM-097,Banjarmasin Selatan,Pemurus Dalam,1,1,0,0,-3.335295,114.574953
+KK-BJM-098,Banjarmasin Selatan,Pemurus Dalam,0,1,1,0,-3.295392,114.638413
+KK-BJM-099,Banjarmasin Timur,Benua Anyar,1,0,0,1,-3.297537,114.642576
+KK-BJM-100,Banjarmasin Selatan,Kelayan Dalam,0,0,0,0,-3.281666,114.631077
+KK-BJM-101,Banjarmasin Timur,Sungai Lulut,0,0,0,0,-3.337445,114.642449
+KK-BJM-102,Banjarmasin Timur,Benua Anyar,0,0,1,0,-3.289516,114.631075
+KK-BJM-103,Banjarmasin Timur,Sungai Lulut,1,0,1,0,-3.294884,114.56081
+KK-BJM-104,Banjarmasin Selatan,Pemurus Dalam,0,1,0,1,-3.33443,114.631659
+KK-BJM-105,Banjarmasin Timur,Pekapuran Raya,1,1,0,0,-3.328637,114.629535
+KK-BJM-106,Banjarmasin Selatan,Kelayan Dalam,0,0,0,1,-3.348343,114.569313
+KK-BJM-107,Banjarmasin Timur,Pekapuran Raya,1,0,1,1,-3.289495,114.646689
+KK-BJM-108,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.305096,114.589968
+KK-BJM-109,Banjarmasin Tengah,Melayu,0,0,0,1,-3.284253,114.561534
+KK-BJM-110,Banjarmasin Timur,Sungai Lulut,1,0,0,0,-3.309359,114.648355
+KK-BJM-111,Banjarmasin Selatan,Kelayan Dalam,1,0,0,1,-3.30824,114.584569
+KK-BJM-112,Banjarmasin Timur,Pekapuran Raya,1,1,1,0,-3.307565,114.601142
+KK-BJM-113,Banjarmasin Timur,Benua Anyar,0,1,0,0,-3.336694,114.554439
+KK-BJM-114,Banjarmasin Timur,Sungai Lulut,0,1,0,0,-3.313606,114.630651
+KK-BJM-115,Banjarmasin Tengah,Pasar Lama,1,1,1,0,-3.284182,114.623704
+KK-BJM-116,Banjarmasin Selatan,Pemurus Dalam,1,0,1,1,-3.319809,114.644887
+KK-BJM-117,Banjarmasin Timur,Benua Anyar,1,0,1,1,-3.328026,114.634802
+KK-BJM-118,Banjarmasin Tengah,Melayu,0,0,0,1,-3.314501,114.616689
+KK-BJM-119,Banjarmasin Timur,Pekapuran Raya,0,0,1,0,-3.301195,114.605441
+KK-BJM-120,Banjarmasin Selatan,Pemurus Dalam,0,0,0,1,-3.303455,114.587915
+KK-BJM-121,Banjarmasin Tengah,Pekapuran Laut,1,1,0,0,-3.306914,114.580095
+KK-BJM-122,Banjarmasin Tengah,Pekapuran Laut,0,0,0,1,-3.328729,114.571018
+KK-BJM-123,Banjarmasin Tengah,Pasar Lama,0,0,0,0,-3.304171,114.596499
+KK-BJM-124,Banjarmasin Timur,Benua Anyar,0,0,0,0,-3.335041,114.597319
+KK-BJM-125,Banjarmasin Tengah,Pekapuran Laut,1,1,0,0,-3.30388,114.578379
+KK-BJM-126,Banjarmasin Tengah,Pasar Lama,0,0,1,1,-3.306652,114.559339
+KK-BJM-127,Banjarmasin Selatan,Mantuil,1,0,0,0,-3.328271,114.630656
+KK-BJM-128,Banjarmasin Selatan,Kelayan Dalam,1,0,0,0,-3.346765,114.648394
+KK-BJM-129,Banjarmasin Tengah,Pekapuran Laut,0,0,0,0,-3.318121,114.638614
+KK-BJM-130,Banjarmasin Tengah,Pekapuran Laut,0,0,1,0,-3.299716,114.588398
+KK-BJM-131,Banjarmasin Timur,Sungai Lulut,0,0,1,0,-3.33967,114.618762
+KK-BJM-132,Banjarmasin Selatan,Pemurus Dalam,0,0,0,0,-3.334681,114.630411
+KK-BJM-133,Banjarmasin Tengah,Pasar Lama,0,0,0,0,-3.317482,114.605741
+KK-BJM-134,Banjarmasin Selatan,Pemurus Dalam,1,0,1,0,-3.340666,114.596464
+KK-BJM-135,Banjarmasin Tengah,Pasar Lama,0,0,1,1,-3.308318,114.645004
+KK-BJM-136,Banjarmasin Timur,Benua Anyar,0,1,1,0,-3.29295,114.639202
+KK-BJM-137,Banjarmasin Timur,Benua Anyar,1,0,1,0,-3.318786,114.565916
+KK-BJM-138,Banjarmasin Timur,Pekapuran Raya,1,0,0,0,-3.331857,114.574724
+KK-BJM-139,Banjarmasin Tengah,Melayu,1,0,0,0,-3.296393,114.60213
+KK-BJM-140,Banjarmasin Tengah,Pekapuran Laut,0,0,0,0,-3.330778,114.557748
+KK-BJM-141,Banjarmasin Timur,Sungai Lulut,0,0,0,0,-3.33098,114.581971
+KK-BJM-142,Banjarmasin Tengah,Pekapuran Laut,1,0,1,0,-3.340314,114.573126
+KK-BJM-143,Banjarmasin Tengah,Pekapuran Laut,1,0,0,0,-3.300551,114.556423
+KK-BJM-144,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.312017,114.591577
+KK-BJM-145,Banjarmasin Selatan,Pemurus Dalam,0,0,1,0,-3.322737,114.62698
+KK-BJM-146,Banjarmasin Tengah,Pekapuran Laut,1,0,0,0,-3.290029,114.626559
+KK-BJM-147,Banjarmasin Timur,Pekapuran Raya,0,0,0,0,-3.349587,114.585176
+KK-BJM-148,Banjarmasin Timur,Pekapuran Raya,1,0,1,0,-3.312325,114.623463
+KK-BJM-149,Banjarmasin Tengah,Pekapuran Laut,1,1,0,0,-3.315824,114.577294
+KK-BJM-150,Banjarmasin Timur,Sungai Lulut,1,1,0,0,-3.32278,114.616887
