@@ -220,9 +220,8 @@ with tab3:
         st.dataframe(df_rek, use_container_width=True)
         st.success(f"Optimasi Berhasil! Total Anggaran Terserap: **Rp {total_biaya:,.0f}** dari Pagu Anggaran **Rp {pagu_anggaran:,.0f}**")
         
-        # Metrik Efisiensi Anggaran
-         sisa_anggaran = pagu_anggaran - total_biaya
-         st.info(f"Sisa Anggaran Cadangan Desa (Silpa Estimasi): Rp {sisa_anggaran:,.0f}")
+        sisa_anggaran = pagu_anggaran - total_biaya
+        st.info(f"Sisa Anggaran Cadangan Desa (Silpa Estimasi): Rp {sisa_anggaran:,.0f}")
     else:
         st.warning("Pagu anggaran tidak mencukupi atau tidak ada klaster hotspot aktif pada filter saat ini.")
 
