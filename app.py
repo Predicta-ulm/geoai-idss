@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import DBSCAN
 import pulp
+import folium
+from streamlit_folium import st_folium
 
 # Konfigurasi Halaman Web
 st.set_page_config(page_title="IDSS Stunting & Kemiskinan Banjarmasin", layout="wide")
@@ -11,7 +13,7 @@ st.title("🌐 IDSS & GeoAI: Predictive Governance Mitigasi Stunting")
 st.markdown("**Studi Kasus Kota Banjarmasin | Platform Pengambilan Keputusan Anggaran Desa Berbasis Data Spasial**")
 st.markdown("---")
 
-# 1. Load Data dari GitHub (Pastikan file CSV sudah ada di repo GitHub Anda)
+# 1. Load Data dari GitHub
 @st.cache_data
 def load_data():
     url = "https://raw.githubusercontent.com/Predicta-ulm/geoai-idss/refs/heads/main/data_dummy_banjarmasin.csv"
@@ -23,14 +25,23 @@ except:
     st.error("Gagal memuat data. Pastikan link GitHub CSV sudah benar di kode.")
     st.stop()
 
+# ==========================================
+# DEFINISI KATALOG PROGRAM (DIPINDAHKAN KE ATAS)
+# ==========================================
+program_katalog = [
+    {"Nama_Program": "Pembangunan Sanitasi Komunal", "Biaya": 35000000, "Dampak": 0.8},
+    {"Nama_Program": "Penyediaan Sumur Bor/Air Bersih", "Biaya": 25000000, "Dampak": 0.7},
+    {"Nama_Program": "Paket Gizi Spesifik Stunting (1 Tahun)", "Biaya": 15000000, "Dampak": 0.9}
+]
+
 # Sidebar untuk Pengaturan Pengguna
 st.sidebar.header("⚙️ Kontrol Kebijakan IDSS")
 pagu_anggaran = st.sidebar.number_input("Pagu Anggaran APB-Desa (Rp)", value=150000000, step=10000000)
 st.sidebar.markdown("---")
 st.sidebar.subheader("🎛️ Skenario Kebijakan Simulasi")
 skenario_pilihan = st.sidebar.selectbox(
-    "Pilih Fokus Prioritas Intervensi",
-    ["Fokus Infrastruktur Sanitasi & Air", "Fokus Penanganan Gizi Spesifik", "Skenario Seimbang (Optimal)"]
+    "Fokus Prioritas Intervensi",
+    ["Skenario Seimbang (Optimal)", "Fokus Infrastruktur Sanitasi & Air", "Fokus Penanganan Gizi Spesifik"]
 )
 
 # Menyesuaikan bobot program berdasarkan skenario pilihan juri
@@ -78,9 +89,6 @@ col1.metric("Total Keluarga Terdata", f"{len(df)} KK")
 col2.metric("Keluarga Kategori Rentan", f"{len(df_rentan)} KK")
 col3.metric("Hotspot Rawan Ditemukan", f"{jumlah_hotspot} Klaster")
 
-import folium
-from streamlit_folium import st_folium
-
 st.markdown("### 🗺️ Peta Tematik Interaktif Sebaran Klaster Hotspot")
 
 # Inisialisasi peta berpusat di Kota Banjarmasin
@@ -107,12 +115,6 @@ rekap_hotspot = df_hotspot.groupby('ID_Hotspot').agg(
     Jumlah_Keluarga=('ID_Keluarga', 'count'),
     Total_Kerentanan=('Skor_Kerentanan', 'sum')
 ).reset_index()
-
-program_katalog = [
-    {"Nama_Program": "Pembangunan Sanitasi Komunal", "Biaya": 35000000, "Dampak": 0.8},
-    {"Nama_Program": "Penyediaan Sumur Bor/Air Bersih", "Biaya": 25000000, "Dampak": 0.7},
-    {"Nama_Program": "Paket Gizi Spesifik Stunting (1 Tahun)", "Biaya": 15000000, "Dampak": 0.9}
-]
 
 prob = pulp.LpProblem("Optimasi_APB_Desa", pulp.LpMaximize)
 variabel_keputusan = {}
@@ -156,8 +158,9 @@ if rekomendasi:
     st.success(f"Optimasi Selesai! Total Anggaran Terserap: **Rp {total_biaya:,.0f}** dari Pagu **Rp {pagu_anggaran:,.0f}**")
 else:
     st.warning("Pagu anggaran terlalu kecil untuk menjalankan program intervensi pada klaster yang ada.")
+
 st.markdown("---")
-st.markdown("### 🏛️ Draf Kebijakan Operasional & Non-Finansial IDSS")
+st.markdown("### 🏛️ Kebijakan Operasional & Non-Finansial IDSS")
 st.markdown("Sistem secara otomatis merumuskan tindakan lapangan berbasis klaster hotspot kerentanan tertinggi:")
 
 # Looping otomatis berdasarkan klaster yang terdeteksi oleh DBSCAN
@@ -177,7 +180,6 @@ if not df_hotspot.empty:
             if cluster_id % 2 == 0:
                 st.write(f"- Mendorong Kepala Desa menerbitkan Perdes tentang percepatan pembangunan sanitasi komunal berbasis gotong royong di wilayah Klaster #{cluster_id}.")
             else:
-                st.write(f"- Mendorong pengaktifan pos pelayanan air bersih desa dan pengawasan ketat distribusi Raskin/Bantuan Pangan Non-Tunai.")
+                st.write(f"- Mendorong pengaktifan pos pelayanan air bersih desa dan pengawasan ketat distribusi Bantuan Pangan Non-Tunai.")
 else:
     st.info("Belum ada klaster hotspot yang memenuhi syarat minimum untuk eskalasi kebijakan non-finansial.")
-
