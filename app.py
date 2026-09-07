@@ -233,7 +233,7 @@ with tab4:
         st.info("Belum ada klaster hotspot.")
 
 with tab5:
-    st.markdown("### 💬 Asisten AI IDSS dengan Akses Internet")
+    st.markdown("### 💬 Asisten AI IDSS")
     st.markdown("Tanyakan data lokal Banjarmasin (anggaran, stunting) atau cari informasi kebijakan/teori terbaru dari internet (contoh: *'Apa definisi stunting menurut WHO?'*).")
 
     # Import library untuk pencarian internet (diletakkan di sini untuk modul chat)
@@ -242,7 +242,7 @@ with tab5:
     # Menyimpan riwayat chat di sesi Streamlit
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Saya bisa menganalisis data lokal desa Anda ATAU mencari informasi kebijakan & riset terbaru langsung dari internet. Apa yang ingin Anda ketahui?"}
+            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Apa yang ingin Anda ketahui?"}
         ]
 
     # Menampilkan riwayat pesan chat
