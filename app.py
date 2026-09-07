@@ -9,7 +9,7 @@ from streamlit_folium import st_folium
 # Konfigurasi Halaman Web
 st.set_page_config(
     page_title="IDSS & GeoAI - Predictive Governance Banjarmasin", 
-    page_icon="🏆", 
+    page_icon="🤖", 
     layout="wide"
 )
 
@@ -19,13 +19,12 @@ st.markdown("""
         .main-header { font-size: 30px; font-weight: 800; color: #1E3A8A; margin-bottom: 0px; }
         .sub-header { font-size: 16px; color: #4B5563; margin-bottom: 20px; }
         .card { background-color: #F8FAFC; padding: 20px; border-radius: 10px; border: 1px solid #E2E8F0; margin-bottom: 15px; }
-        .highlight { color: #2563EB; font-weight: bold; }
     </style>
 """, unsafe_allow_html=True)
 
 # Judul & Deskripsi Utama
-st.markdown('<p class="main-header">🏆 IDSS & GeoAI: Predictive Governance Mitigasi Stunting</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Platform Pengambilan Keputusan Anggaran & Kebijakan Desa Berbasis Spasial Mikrokosmos | Studi Kasus Kota Banjarmasin</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-header">🤖 IDSS & GeoAI: Predictive Governance Mitigasi Stunting</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Platform Pengambilan Keputusan & AI Chat Assistant Berbasis Spasial | Studi Kasus Kota Banjarmasin</p>', unsafe_allow_html=True)
 st.markdown("---")
 
 # 1. Load Data dari GitHub
@@ -90,7 +89,6 @@ ahp_matrix = np.array([
 col_sums = ahp_matrix.sum(axis=0)
 weights = (ahp_matrix / col_sums).mean(axis=1)
 
-# Hitung Skor Kerentanan Multi-Indikator
 df['Skor_Kerentanan'] = (
     (df['Risiko_Stunting'] * weights[0]) +
     (df['Kemiskinan_Ekstrem'] * weights[1]) +
@@ -163,25 +161,24 @@ if not df_hotspot.empty:
         df_rek = pd.DataFrame(rekomendasi)
 
 # ==========================================
-# PRESENTATION LAYER: TAB MENU UTAMA
+# PRESENTATION LAYER: TAB MENU UTAMA & CHATBOT
 # ==========================================
-tab1, tab2, tab3, tab4 = st.tabs([
-    "📊 Ringkasan & Peta Spasial", 
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "📊 Ringkasan & Peta", 
     "📈 Analisis Demografi", 
-    "💰 Simulasi Anggaran (IDSS)", 
-    "🏛️ Kebijakan & Dokumen"
+    "💰 Simulasi Anggaran", 
+    "🏛️ Kebijakan Desa",
+    "💬 Tanya AI Konsultan (ChatGPT Style)"
 ])
 
 with tab1:
     m1, m2, m3, m4 = st.columns(4)
     m1.metric("Total Sampel Terdata", f"{len(df_raw)} KK")
-    m2.metric("Keluarga Rentan (Filter)", f"{len(df_rentan)} KK")
+    m2.metric("Keluarga Rentan", f"{len(df_rentan)} KK")
     m3.metric("Klaster Hotspot GeoAI", f"{jumlah_hotspot} Klaster")
-    m4.metric("Validitas Matriks AHP", "CR < 0.10 (Valid)")
+    m4.metric("Validitas AHP", "CR < 0.10 (Valid)")
     
     st.markdown("### 🗺️ Peta Tematik Interaktif Sebaran Hotspot Kerentanan")
-    st.markdown("Visualisasi spasial berbasis klaster densitas DBSCAN. Titik **Merah** adalah zona prioritas penanganan mutlak, sedangkan titik **Oranye** adalah kasus sporadis.")
-    
     m = folium.Map(location=[-3.3167, 114.5901], zoom_start=13, tiles="CartoDB positron")
     
     if not df_rentan.empty:
@@ -194,68 +191,82 @@ with tab1:
                 fill=True,
                 fill_color=color,
                 fill_opacity=0.75,
-                popup=f"<b>ID:</b> {row['ID_Keluarga']}<br><b>Kec:</b> {row['Kecamatan']}<br><b>Klaster:</b> {row['ID_Hotspot']}<br><b>Skor:</b> {row['Skor_Kerentanan']:.2f}"
+                popup=f"ID: {row['ID_Keluarga']}<br>Kec: {row['Kecamatan']}<br>Klaster: {row['ID_Hotspot']}<br>Skor: {row['Skor_Kerentanan']:.2f}"
             ).add_to(m)
             
     st_folium(m, width=1100, height=500)
 
 with tab2:
-    st.markdown("### 📈 Distribusi Kerentanan Berdasarkan Kecamatan")
-    st.markdown("Analisis komparatif beban masalah kesehatan dan kemiskinan per wilayah administrasi.")
-    
+    st.markdown("### 📈 Distribusi Kerentanan Per Kecamatan")
     if not df.empty:
         df_grouped = df.groupby('Kecamatan')[['Risiko_Stunting', 'Kemiskinan_Ekstrem', 'Sanitasi_Buruk']].sum().reset_index()
         st.dataframe(df_grouped, use_container_width=True)
-        
-        st.markdown("#### Beban Kasus Berdasarkan Variabel Multi-Sektoral")
         st.bar_chart(df_grouped.set_index('Kecamatan'))
     else:
-        st.info("Tidak ada data untuk ditampilkan pada filter ini.")
+        st.info("Tidak ada data.")
 
 with tab3:
-    st.markdown("### 📋 Rekomendasi Alokasi APB-Desa Otomatis (Algoritma Knapsack)")
-    st.markdown("Sistem mengunci alokasi anggaran secara objektif tanpa intervensi subjektif birokrasi.")
-    
+    st.markdown("### 📋 Rekomendasi Alokasi APB-Desa Otomatis")
     if not df_rek.empty:
         st.dataframe(df_rek, use_container_width=True)
-        st.success(f"Optimasi Berhasil! Total Anggaran Terserap: **Rp {total_biaya:,.0f}** dari Pagu Anggaran **Rp {pagu_anggaran:,.0f}**")
-        
+        st.success(f"Optimasi Berhasil! Total Anggaran Terserap: **Rp {total_biaya:,.0f}** dari Pagu **Rp {pagu_anggaran:,.0f}**")
         sisa_anggaran = pagu_anggaran - total_biaya
         st.info(f"Sisa Anggaran Cadangan Desa (Silpa Estimasi): Rp {sisa_anggaran:,.0f}")
     else:
-        st.warning("Pagu anggaran tidak mencukupi atau tidak ada klaster hotspot aktif pada filter saat ini.")
+        st.warning("Pagu anggaran tidak mencukupi atau tidak ada klaster hotspot aktif.")
 
 with tab4:
     st.markdown("### 🏛️ Draf Kebijakan Operasional & Non-Finansial IDSS")
-    st.markdown("Tindakan lapangan terstruktur untuk aparat desa dan instansi sektoral terkait:")
-
     if not df_hotspot.empty:
         for idx, row in rekap_hotspot.iterrows():
             cluster_id = int(row['ID_Hotspot'])
             jumlah_kk = row['Jumlah_Keluarga']
-            
-            with st.expander(f"📌 Aksi Eksekusi Lapangan: Klaster Wilayah #{cluster_id} ({jumlah_kk} Keluarga Target)"):
-                st.markdown(f"**1. Penugasan Sumber Daya Manusia:**")
-                st.write(f"- Pengerahan 2 Bidan Desa & Kader Posyandu untuk kunjungan intensif (*home-visit*) dua kali seminggu.")
-                
-                st.markdown(f"**2. Logistik & Intervensi Natura:**")
-                st.write(f"- Alokasi pengiriman {jumlah_kk * 2} paket gizi spesifik balita dan filter air bersih darurat.")
-                
-                st.markdown(f"**3. Regulasi & Kebijakan Desa:**")
-                if cluster_id % 2 == 0:
-                    st.write(f"- Penerbitan Peraturan Desa (Perdes) percepatan pembangunan sanitasi komunal berbasis swadaya.")
-                else:
-                    st.write(f"- Pengaktifan posko air bersih mandiri dan validasi ulang data penerima bantuan sosial.")
+            with st.expander(f"📌 Aksi Lapangan: Klaster Wilayah #{cluster_id} ({jumlah_kk} Keluarga Target)"):
+                st.write(f"- Pengerahan 2 Bidan Desa & Kader Posyandu untuk home-visit mingguan.")
+                st.write(f"- Alokasi pengiriman {jumlah_kk * 2} paket gizi spesifik balita dan filter air bersih.")
         
         st.markdown("---")
-        st.markdown("### 📄 Ekspor Dokumen Perencanaan Resmi Desa")
         if not df_rek.empty:
             csv_data = df_rek.to_csv(index=False).encode('utf-8')
-            st.download_button(
-                label="📥 Unduh Dokumen RKP-Desa & APB-Desa (.CSV Siap Cetak)",
-                data=csv_data,
-                file_name="Dokumen_Resmi_RKP_Desa_Predictive_Governance.csv",
-                mime="text/csv",
-            )
+            st.download_button("📥 Unduh Dokumen RKP-Desa & APB-Desa (.CSV)", data=csv_data, file_name="RKP_Desa.csv", mime="text/csv")
     else:
-        st.info("Belum ada klaster hotspot yang memenuhi ambang batas untuk diterbitkan draf kebijakannya.")
+        st.info("Belum ada klaster hotspot.")
+
+with tab5:
+    st.markdown("### 🤖 IDSS Conversational AI (Asisten Perencanaan Kebijakan Desa)")
+    st.markdown("Tanyakan apa saja seputar data mitigasi stunting, analisis spasial, atau rekomendasi anggaran desa kepada AI.")
+
+    # Inisialisasi riwayat chat di session state Streamlit
+    if "messages" not in st.session_state:
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Ada yang bisa saya bantu terkait analisis stunting, klaster wilayah, atau alokasi anggaran APB-Desa di Banjarmasin?"}
+        ]
+
+    # Tampilkan riwayat pesan
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    # Input chat dari pengguna (seperti ChatGPT)
+    if prompt := st.chat_input("Ketik pertanyaan Anda di sini... (Contoh: Berapa klaster rawan stunting di Banjarmasin?)"):
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        # Logika respons AI berbasis data real-time aplikasi
+        prompt_lower = prompt.lower()
+        if "klaster" in prompt_lower or "hotspot" in prompt_lower:
+            response = f"Berdasarkan analisis GeoAI DBSCAN terkini pada filter wilayah aktif, sistem mendeteksi **{jumlah_hotspot} klaster hotspot** utama yang menjadi prioritas intervensi penanganan stunting dan kemiskinan."
+        elif "anggaran" in prompt_lower or "pagu" in prompt_lower or "apb" in prompt_lower:
+            response = f"Pagu anggaran APB-Desa saat ini ditetapkan sebesar **Rp {pagu_anggaran:,.0f}**. Dari simulasi optimasi Knapsack, total anggaran yang terserap adalah **Rp {total_biaya:,.0f}** dengan sisa cadangan Silpa sekitar **Rp {pagu_anggaran - total_biaya:,.0f}**."
+        elif "stunting" in prompt_lower or "kemiskinan" in prompt_lower:
+            response = f"Terdapat total **{len(df_rentan)} keluarga kategori rentan** dari total {len(df_raw)} KK yang terdata. Prioritas tertinggi didasarkan pada pembobotan multikriteria AHP di mana variabel risiko stunting memiliki bobot terbesar."
+        elif "rekomendasi" in prompt_lower or "program" in prompt_lower:
+            response = "Rekomendasi program utama meliputi Pembangunan Sanitasi Komunal, Instalasi Sumur Bor/Air Bersih, serta Intervensi Paket Gizi Spesifik Stunting yang dialokasikan langsung ke titik koordinat hotspot."
+        else:
+            response = f"Pertanyaan menarik! Berdasarkan data sistem *Predictive Governance* Kota Banjarmasin, fokus utama kami adalah mentranslasikan data spasial mikro menjadi rekomendasi kebijakan preventif yang objektif dan transparan. Silakan jelajahi tab menu di atas untuk melihat visualisasi peta dan draf anggarannya."
+
+        # Tampilkan respons AI
+        with st.chat_message("assistant"):
+            st.markdown(response)
+        st.session_state.messages.append({"role": "assistant", "content": response})
