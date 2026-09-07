@@ -233,40 +233,63 @@ with tab4:
         st.info("Belum ada klaster hotspot.")
 
 with tab5:
-    st.markdown("### 🤖 IDSS Conversational AI (Asisten Perencanaan Kebijakan Desa)")
-    st.markdown("Tanyakan apa saja seputar data mitigasi stunting, analisis spasial, atau rekomendasi anggaran desa kepada AI.")
+    st.markdown("### 💬 Asisten AI IDSS dengan Akses Internet")
+    st.markdown("Tanyakan data lokal Banjarmasin (anggaran, stunting) atau cari informasi kebijakan/teori terbaru dari internet (contoh: *'Apa definisi stunting menurut WHO?'*).")
 
-    # Inisialisasi riwayat chat di session state Streamlit
+    # Import library untuk pencarian internet (diletakkan di sini untuk modul chat)
+    from duckduckgo_search import DDGS
+
+    # Menyimpan riwayat chat di sesi Streamlit
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Ada yang bisa saya bantu terkait analisis stunting, klaster wilayah, atau alokasi anggaran APB-Desa di Banjarmasin?"}
+            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Saya bisa menganalisis data lokal desa Anda ATAU mencari informasi kebijakan & riset terbaru langsung dari internet. Apa yang ingin Anda ketahui?"}
         ]
 
-    # Tampilkan riwayat pesan
+    # Menampilkan riwayat pesan chat
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-    # Input chat dari pengguna (seperti ChatGPT)
-    if prompt := st.chat_input("Ketik pertanyaan Anda di sini... (Contoh: Berapa klaster rawan stunting di Banjarmasin?)"):
+    # Input chat pengguna
+    if prompt := st.chat_input("Ketik pertanyaan Anda (Contoh: Berita stunting terbaru di Indonesia)..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Logika respons AI berbasis data real-time aplikasi
+        # Logika AI Cerdas (Prioritas: 1. Data Lokal -> 2. Cari di Internet)
+        response = ""
         prompt_lower = prompt.lower()
-        if "klaster" in prompt_lower or "hotspot" in prompt_lower:
-            response = f"Berdasarkan analisis GeoAI DBSCAN terkini pada filter wilayah aktif, sistem mendeteksi **{jumlah_hotspot} klaster hotspot** utama yang menjadi prioritas intervensi penanganan stunting dan kemiskinan."
-        elif "anggaran" in prompt_lower or "pagu" in prompt_lower or "apb" in prompt_lower:
-            response = f"Pagu anggaran APB-Desa saat ini ditetapkan sebesar **Rp {pagu_anggaran:,.0f}**. Dari simulasi optimasi Knapsack, total anggaran yang terserap adalah **Rp {total_biaya:,.0f}** dengan sisa cadangan Silpa sekitar **Rp {pagu_anggaran - total_biaya:,.0f}**."
-        elif "stunting" in prompt_lower or "kemiskinan" in prompt_lower:
-            response = f"Terdapat total **{len(df_rentan)} keluarga kategori rentan** dari total {len(df_raw)} KK yang terdata. Prioritas tertinggi didasarkan pada pembobotan multikriteria AHP di mana variabel risiko stunting memiliki bobot terbesar."
-        elif "rekomendasi" in prompt_lower or "program" in prompt_lower:
-            response = "Rekomendasi program utama meliputi Pembangunan Sanitasi Komunal, Instalasi Sumur Bor/Air Bersih, serta Intervensi Paket Gizi Spesifik Stunting yang dialokasikan langsung ke titik koordinat hotspot."
-        else:
-            response = f"Pertanyaan menarik! Berdasarkan data sistem *Predictive Governance* Kota Banjarmasin, fokus utama kami adalah mentranslasikan data spasial mikro menjadi rekomendasi kebijakan preventif yang objektif dan transparan. Silakan jelajahi tab menu di atas untuk melihat visualisasi peta dan draf anggarannya."
+        
+        # 1. CEK DATA LOKAL / SISTEM TERLEBIH DAHULU
+        if "kecamatan" in prompt_lower or "wilayah" in prompt_lower:
+            top_kec = df_raw.groupby('Kecamatan')['Risiko_Stunting'].sum().idxmax()
+            response = f"📊 **[Data Lokal IDSS]** Berdasarkan analisis data spasial mikrokosmos, wilayah dengan akumulasi risiko stunting dan kerentanan tertinggi saat ini terkonsentrasi di **{top_kec}**. Intervensi infrastruktur sanitasi sangat disarankan di area ini."
+            
+        elif "anggaran" in prompt_lower or "apb" in prompt_lower or "dana" in prompt_lower:
+            response = f"💰 **[Data Lokal IDSS]** Alokasi anggaran aktif saat ini adalah **Rp {pagu_anggaran:,.0f}**. Melalui optimasi Knapsack, sistem menyerap dana secara matematis untuk memprioritaskan klaster merah (hotspot)."
+            
+        elif "klaster" in prompt_lower or "rentan" in prompt_lower:
+            response = f"📍 **[Data Lokal IDSS]** Sistem mendeteksi ada **{len(df_rentan)} keluarga rentan** yang membentuk **{jumlah_hotspot} klaster hotspot darurat** di Banjarmasin yang wajib segera diintervensi."
 
-        # Tampilkan respons AI
+        # 2. JIKA TIDAK ADA DI DATA LOKAL -> CARI KE INTERNET 🌐
+        else:
+            with st.spinner("Asisten sedang mencari jawaban di internet... 🌐"):
+                try:
+                    # Mencari 3 artikel/jawaban teratas dari internet
+                    hasil_pencarian = DDGS().text(prompt, max_results=3)
+                    
+                    if hasil_pencarian:
+                        response = f"🌐 **[Hasil Pencarian Internet Real-Time]** Menampilkan ringkasan informasi untuk *'{prompt}'*:\n\n"
+                        for i, res in enumerate(hasil_pencarian, 1):
+                            response += f"**{i}. {res['title']}**\n"
+                            response += f"*{res['body']}*\n"
+                            response += f"[Baca selengkapnya]({res['href']})\n\n"
+                    else:
+                        response = "Maaf, saya tidak dapat menemukan informasi relevan di internet saat ini."
+                except Exception as e:
+                    response = "⚠️ Sistem saat ini gagal terhubung ke internet. Silakan coba lagi nanti."
+
+        # Menampilkan respons AI ke layar
+        st.session_state.messages.append({"role": "assistant", "content": response})
         with st.chat_message("assistant"):
             st.markdown(response)
-        st.session_state.messages.append({"role": "assistant", "content": response})
