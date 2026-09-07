@@ -5,4 +5,4 @@ scikit-learn
 pulp
 folium
 streamlit-folium
-duckduckgo-search
+wikipedia
