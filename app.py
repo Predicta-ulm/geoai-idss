@@ -233,16 +233,17 @@ with tab4:
         st.info("Belum ada klaster hotspot.")
 
 with tab5:
-    st.markdown("### 💬 Asisten AI IDSS")
-    st.markdown("Tanyakan data lokal Banjarmasin (anggaran, stunting) atau cari informasi kebijakan/teori terbaru dari internet (contoh: *'Apa definisi stunting menurut WHO?'*).")
+    st.markdown("### 💬 Asisten AI IDSS (Knowledge Base & Internet)")
+    st.markdown("Tanyakan data anggaran/spasial desa, atau cari teori/definisi kebijakan dari internet (Misal: *'Stunting'*, *'Kemiskinan'*).")
 
-    # Import library untuk pencarian internet (diletakkan di sini untuk modul chat)
-    from duckduckgo_search import DDGS
+    import wikipedia
+    # Mengatur Wikipedia agar mencari artikel dalam Bahasa Indonesia
+    wikipedia.set_lang("id")
 
     # Menyimpan riwayat chat di sesi Streamlit
     if "messages" not in st.session_state:
         st.session_state.messages = [
-            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Apa yang ingin Anda ketahui?"}
+            {"role": "assistant", "content": "Halo! Saya Asisten AI IDSS. Saya bisa menganalisis data desa Anda ATAU mencari teori ilmiah dan informasi dari ensiklopedia internet. Apa yang ingin Anda ketahui?"}
         ]
 
     # Menampilkan riwayat pesan chat
@@ -251,12 +252,11 @@ with tab5:
             st.markdown(message["content"])
 
     # Input chat pengguna
-    if prompt := st.chat_input("Ketik pertanyaan Anda (Contoh: Berita stunting terbaru di Indonesia)..."):
+    if prompt := st.chat_input("Ketik pertanyaan Anda (Contoh: Apa itu Stunting?)..."):
         st.session_state.messages.append({"role": "user", "content": prompt})
         with st.chat_message("user"):
             st.markdown(prompt)
 
-        # Logika AI Cerdas (Prioritas: 1. Data Lokal -> 2. Cari di Internet)
         response = ""
         prompt_lower = prompt.lower()
         
@@ -271,23 +271,27 @@ with tab5:
         elif "klaster" in prompt_lower or "rentan" in prompt_lower:
             response = f"📍 **[Data Lokal IDSS]** Sistem mendeteksi ada **{len(df_rentan)} keluarga rentan** yang membentuk **{jumlah_hotspot} klaster hotspot darurat** di Banjarmasin yang wajib segera diintervensi."
 
-        # 2. JIKA TIDAK ADA DI DATA LOKAL -> CARI KE INTERNET 🌐
+        # 2. JIKA TIDAK ADA DI DATA LOKAL -> CARI KE WIKIPEDIA (INTERNET) 🌐
         else:
-            with st.spinner("Asisten sedang mencari jawaban di internet... 🌐"):
+            with st.spinner("AI sedang membaca ensiklopedia internet... 🌐"):
                 try:
-                    # Mencari 3 artikel/jawaban teratas dari internet
-                    hasil_pencarian = DDGS().text(prompt, max_results=3)
+                    # Mencari ringkasan 3 kalimat dari internet
+                    hasil = wikipedia.summary(prompt, sentences=3)
+                    # Mengambil URL sumber asli
+                    halaman = wikipedia.page(prompt)
                     
-                    if hasil_pencarian:
-                        response = f"🌐 **[Hasil Pencarian Internet Real-Time]** Menampilkan ringkasan informasi untuk *'{prompt}'*:\n\n"
-                        for i, res in enumerate(hasil_pencarian, 1):
-                            response += f"**{i}. {res['title']}**\n"
-                            response += f"*{res['body']}*\n"
-                            response += f"[Baca selengkapnya]({res['href']})\n\n"
-                    else:
-                        response = "Maaf, saya tidak dapat menemukan informasi relevan di internet saat ini."
+                    response = f"🌐 **[Hasil Pencarian Ensiklopedia Internet]**\n\n{hasil}\n\n🔗 *Sumber bacaan selengkapnya:* [{halaman.title}]({halaman.url})"
+                
+                except wikipedia.exceptions.DisambiguationError as e:
+                    # Jika kata kunci memiliki banyak arti
+                    opsi = ", ".join(e.options[:3])
+                    response = f"⚠️ Kata kunci '{prompt}' terlalu umum. Apakah maksud Anda berhubungan dengan: **{opsi}**? Coba ketik lebih spesifik."
+                
+                except wikipedia.exceptions.PageError:
+                    response = f"Maaf, saya tidak menemukan artikel spesifik tentang '{prompt}' di ensiklopedia. Coba gunakan kata kunci baku seperti 'Stunting', 'Gizi Buruk', atau 'Kemiskinan'."
+                
                 except Exception as e:
-                    response = "⚠️ Sistem saat ini gagal terhubung ke internet. Silakan coba lagi nanti."
+                    response = "⚠️ Sistem gagal terhubung ke sumber internet. Silakan coba beberapa saat lagi."
 
         # Menampilkan respons AI ke layar
         st.session_state.messages.append({"role": "assistant", "content": response})
