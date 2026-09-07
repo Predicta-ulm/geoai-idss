@@ -168,7 +168,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "📈 Analisis Demografi", 
     "💰 Simulasi Anggaran", 
     "🏛️ Kebijakan Desa",
-    "💬 Tanya AI Konsultan (ChatGPT Style)"
+    "💬 Tanya AI Konsultan"
 ])
 
 with tab1:
