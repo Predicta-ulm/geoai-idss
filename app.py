@@ -19,23 +19,67 @@ st.markdown("""
         .impact-metric { font-size: 24px; color: #059669; font-weight: bold; }
         .stButton>button { background-color: #2563EB; color: white; border-radius: 8px; width: 100%; font-weight: bold; }
         .stButton>button:hover { background-color: #1D4ED8; }
+        .login-box { max-width: 400px; margin: auto; padding: 30px; border: 1px solid #E2E8F0; border-radius: 10px; background-color: #F8FAFC; }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# SIMULASI LOGIN MULTI-USER (ROLE-BASED)
+# SISTEM AUTENTIKASI (LOGIN & LOGOUT)
 # ==========================================
-st.sidebar.markdown("### 🔐 Portal Login PREDICTA")
-role_user = st.sidebar.selectbox(
-    "Masuk Sebagai:", 
-    [
-        "👑 Kepala Desa (Dashboard Eksekutif)", 
-        "👩‍⚕️ Kader Posyandu (Input Data Stunting)", 
-        "👨‍💼 Kasi Kesejahteraan (Input Data Ekonomi)", 
-        "💧 Kader KPM (Input Data Sanitasi)"
-    ]
-)
+# Database Pengguna (Prototype)
+USER_DB = {
+    "kades": {"password": "admin123", "role": "👑 Kepala Desa (Dashboard Eksekutif)"},
+    "posyandu": {"password": "kader123", "role": "👩‍⚕️ Kader Posyandu (Input Data Stunting)"},
+    "kesra": {"password": "kader123", "role": "👨‍💼 Kasi Kesejahteraan (Input Data Ekonomi)"},
+    "kesling": {"password": "kader123", "role": "💧 Kader KPM (Input Data Sanitasi)"}
+}
+
+# Inisialisasi Session State
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+    st.session_state['role'] = None
+    st.session_state['username'] = None
+
+# Tampilan Halaman Login (Jika belum login)
+if not st.session_state['logged_in']:
+    st.markdown('<p class="main-header" style="text-align: center;">🌐 PREDICTA PORTAL</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sub-header" style="text-align: center;">Predictive Governance & GeoAI System</p>', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+        st.subheader("🔐 Silakan Login")
+        input_user = st.text_input("Username")
+        input_pass = st.text_input("Password", type="password")
+        
+        if st.button("Masuk"):
+            if input_user in USER_DB and USER_DB[input_user]["password"] == input_pass:
+                st.session_state['logged_in'] = True
+                st.session_state['role'] = USER_DB[input_user]["role"]
+                st.session_state['username'] = input_user
+                st.rerun() # Refresh halaman setelah sukses login
+            else:
+                st.error("Username atau Password salah!")
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.info("**Akun Demo Juri:**\n- Kades: `kades` | `admin123`\n- Kader Posyandu: `posyandu` | `kader123`")
+    
+    st.stop() # Hentikan eksekusi kode di bawah jika belum login
+
+# ==========================================
+# SIDEBAR AKTIF (SETELAH LOGIN)
+# ==========================================
+st.sidebar.markdown(f"Selamat datang, **{st.session_state['username']}**!")
+st.sidebar.markdown(f"*{st.session_state['role']}*")
 st.sidebar.markdown("---")
+
+if st.sidebar.button("🚪 Logout"):
+    st.session_state['logged_in'] = False
+    st.session_state['role'] = None
+    st.session_state['username'] = None
+    st.rerun()
+
+role_user = st.session_state['role']
 
 # ==========================================
 # HALAMAN INPUT DATA KADER (OPERASIONAL LAPANGAN)
@@ -67,8 +111,7 @@ if role_user != "👑 Kepala Desa (Dashboard Eksekutif)":
         if st.form_submit_button("Simpan Data ke Server PREDICTA"):
             st.success(f"✅ Data Keluarga {id_kk} berhasil disimpan! Engine GeoAI akan memproses ulang hotspot stunting secara otomatis.")
     
-    # Hentikan eksekusi kode di bawah agar Dashboard Kades tidak muncul di layar Kader
-    st.stop()
+    st.stop() # Hentikan eksekusi kode agar Dashboard Kades tidak muncul
 
 # ==========================================
 # HALAMAN DASHBOARD KEPALA DESA (EKSEKUTIF)
@@ -77,21 +120,18 @@ st.markdown('<p class="main-header">🌐 PREDICTA: Predictive Governance & GeoAI
 st.markdown('<p class="sub-header">Platform Tata Kelola Prediktif Mitigasi Stunting & Kemiskinan Ekstrem (Studi Kasus: Banjarmasin)</p>', unsafe_allow_html=True)
 st.markdown("---")
 
-# Data Layer (Menggunakan File V2)
 @st.cache_data
 def load_data():
-    # URL mengarah ke file V2 yang baru
     url = "https://raw.githubusercontent.com/Predicta-ulm/geoai-idss/refs/heads/main/data_dummy_banjarmasin_v2.csv"
     return pd.read_csv(url)
 
 try:
     df = load_data()
 except:
-    st.error("Gagal memuat data. Periksa koneksi internet atau pastikan file 'data_dummy_banjarmasin_v2.csv' sudah di-upload ke GitHub.")
+    st.error("Gagal memuat data. Periksa koneksi internet atau link GitHub Anda.")
     st.stop()
 
 # Logic Layer (AHP Weights)
-# Pembobotan: [Gizi 30%, Ekonomi 20%, Sanitasi 35%, Air/Kesehatan 15%]
 weights = [0.30, 0.20, 0.35, 0.15] 
 
 df['Skor_Kerentanan'] = (
@@ -159,7 +199,6 @@ with tab1:
             if not layer_ekonomi and row['Kemiskinan_Ekstrem'] == 1: tampil = False
             
             if tampil:
-                # Menampilkan nilai riil dari V2 di popup
                 popup_text = f"<b>ID:</b> {row['ID_Keluarga']}<br>" \
                              f"<b>Skor:</b> {row['Skor_Kerentanan']:.2f}<br>" \
                              f"<b>Desil Ekonomi:</b> {row['Desil_Kesejahteraan']}<br>" \
@@ -178,7 +217,6 @@ with tab1:
 # ------------------------------------------
 with tab2:
     st.subheader("Transparansi Pembobotan AHP (Analytic Hierarchy Process)")
-    st.markdown("Menunjukkan keabsahan matematis dari penentuan prioritas, menghilangkan bias birokrasi.")
     
     c1, c2 = st.columns(2)
     with c1:
@@ -223,7 +261,6 @@ with tab3:
                 for idx_p, prog in enumerate(program_katalog):
                     vars_keputusan[(int(h_row['ID_Hotspot']), idx_p)] = pulp.LpVariable(f"H{int(h_row['ID_Hotspot'])}_P{idx_p}", cat="Binary")
 
-            # Fungsi Tujuan (Maksimalkan Dampak) & Batasan Anggaran
             prob += pulp.lpSum(vars_keputusan[(h, p)] * rekap_hotspot.loc[rekap_hotspot['ID_Hotspot']==h, 'Total_Kerentanan'].values[0] * program_katalog[p]['Dampak'] for h, p in vars_keputusan)
             prob += pulp.lpSum(vars_keputusan[(h, p)] * program_katalog[p]['Biaya'] for h, p in vars_keputusan) <= pagu_simulasi
             prob.solve()
@@ -246,9 +283,8 @@ with tab3:
             if rekomendasi:
                 st.dataframe(pd.DataFrame(rekomendasi), use_container_width=True)
                 
-                # Kalkulasi Estimasi Impact
                 total_krisis_desa = df['Skor_Kerentanan'].sum()
-                persentase_dampak = min((dampak_tercapai / total_krisis_desa) * 100 * 2, 100) # x2 scaling untuk prototype
+                persentase_dampak = min((dampak_tercapai / total_krisis_desa) * 100 * 2, 100)
                 
                 st.markdown(f'<p class="impact-metric">📉 Estimasi Impact: Program ini diproyeksikan menurunkan angka kerentanan desa sebesar {persentase_dampak:.1f}%</p>', unsafe_allow_html=True)
                 st.success(f"Dana Terserap: Rp {total_terserap:,.0f} | Sisa Anggaran (Silpa): Rp {pagu_simulasi - total_terserap:,.0f}")
@@ -260,7 +296,6 @@ with tab3:
 # ------------------------------------------
 with tab4:
     st.subheader("Portal Transparansi Publik & Akses Warga")
-    st.markdown("Wujud tata kelola terbuka (*Open Governance*) untuk mencegah korupsi Dana Desa.")
     
     col_a, col_b = st.columns(2)
     with col_a:
@@ -269,8 +304,6 @@ with tab4:
         st.progress(75, text="Fase 3: Instalasi Pipa (75% Selesai)")
         st.markdown("**Distribusi PMT Balita Gizi Buruk**")
         st.progress(100, text="Selesai Disalurkan (100%)")
-        st.markdown("**Perbaikan Sanitasi RT 05**")
-        st.progress(30, text="Fase 1: Penggalian (30% Selesai)")
 
     with col_b:
         st.markdown("#### 🗣️ Kotak Suara & Pengaduan Warga")
@@ -288,7 +321,7 @@ with tab5:
     wikipedia.set_lang("id")
 
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "assistant", "content": "Halo! Saya AI PREDICTA. Ingin berdiskusi tentang analisis kerentanan wilayah ini atau mencari literatur kebijakan stunting dan kemiskinan dari internet?"}]
+        st.session_state.messages = [{"role": "assistant", "content": "Halo! Saya AI PREDICTA. Ada yang bisa saya bantu?"}]
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
@@ -304,7 +337,7 @@ with tab5:
                 halaman = wikipedia.page(prompt)
                 response = f"🌐 **Literatur Ditemukan:**\n\n{hasil}\n\n🔗 [Sumber Referensi Lengkap Wikipedia]({halaman.url})"
             except:
-                response = "Maaf, literatur yang relevan tidak ditemukan. Cobalah menggunakan kata kunci baku secara spesifik, seperti 'Kemiskinan' atau 'Stunting'."
+                response = "Maaf, literatur yang relevan tidak ditemukan."
 
         st.session_state.messages.append({"role": "assistant", "content": response})
         with st.chat_message("assistant"): st.markdown(response)
