@@ -61,8 +61,7 @@ if not st.session_state['logged_in']:
             else:
                 st.error("Username atau Password salah!")
         st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.info("**Akun Demo Juri:**\n- Kades: `kades` | `admin123`\n- Kader Posyandu: `posyandu` | `kader123`")
+    
     
     st.stop() # Hentikan eksekusi kode di bawah jika belum login
 
