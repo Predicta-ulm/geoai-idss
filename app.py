@@ -26,7 +26,6 @@ st.markdown("""
 # ==========================================
 # SISTEM AUTENTIKASI (LOGIN & LOGOUT)
 # ==========================================
-# Database Pengguna (Prototype)
 USER_DB = {
     "kades": {"password": "admin123", "role": "👑 Kepala Desa (Dashboard Eksekutif)"},
     "posyandu": {"password": "kader123", "role": "👩‍⚕️ Kader Posyandu (Input Data Stunting)"},
@@ -34,13 +33,11 @@ USER_DB = {
     "kesling": {"password": "kader123", "role": "💧 Kader KPM (Input Data Sanitasi)"}
 }
 
-# Inisialisasi Session State
 if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
     st.session_state['role'] = None
     st.session_state['username'] = None
 
-# Tampilan Halaman Login (Jika belum login)
 if not st.session_state['logged_in']:
     st.markdown('<p class="main-header" style="text-align: center;">🌐 PREDICTA PORTAL</p>', unsafe_allow_html=True)
     st.markdown('<p class="sub-header" style="text-align: center;">Predictive Governance & GeoAI System</p>', unsafe_allow_html=True)
@@ -57,13 +54,14 @@ if not st.session_state['logged_in']:
                 st.session_state['logged_in'] = True
                 st.session_state['role'] = USER_DB[input_user]["role"]
                 st.session_state['username'] = input_user
-                st.rerun() # Refresh halaman setelah sukses login
+                st.rerun() 
             else:
                 st.error("Username atau Password salah!")
         st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.info("**Akun Demo Juri:**\n- Kades: `kades` | `admin123`\n- Kader Posyandu: `posyandu` | `kader123`")
     
-    
-    st.stop() # Hentikan eksekusi kode di bawah jika belum login
+    st.stop() 
 
 # ==========================================
 # SIDEBAR AKTIF (SETELAH LOGIN)
@@ -110,7 +108,7 @@ if role_user != "👑 Kepala Desa (Dashboard Eksekutif)":
         if st.form_submit_button("Simpan Data ke Server PREDICTA"):
             st.success(f"✅ Data Keluarga {id_kk} berhasil disimpan! Engine GeoAI akan memproses ulang hotspot stunting secara otomatis.")
     
-    st.stop() # Hentikan eksekusi kode agar Dashboard Kades tidak muncul
+    st.stop() 
 
 # ==========================================
 # HALAMAN DASHBOARD KEPALA DESA (EKSEKUTIF)
@@ -119,15 +117,17 @@ st.markdown('<p class="main-header">🌐 PREDICTA: Predictive Governance & GeoAI
 st.markdown('<p class="sub-header">Platform Tata Kelola Prediktif Mitigasi Stunting & Kemiskinan Ekstrem (Studi Kasus: Banjarmasin)</p>', unsafe_allow_html=True)
 st.markdown("---")
 
+# Data Layer (Menggunakan File V3)
 @st.cache_data
 def load_data():
-    url = "https://raw.githubusercontent.com/Predicta-ulm/geoai-idss/refs/heads/main/data_dummy_banjarmasin_v2.csv"
+    # URL MENGARAH KE FILE V3 YANG BARU
+    url = "https://raw.githubusercontent.com/Predicta-ulm/geoai-idss/refs/heads/main/data_dummy_banjarmasin_v3.csv"
     return pd.read_csv(url)
 
 try:
     df = load_data()
 except:
-    st.error("Gagal memuat data. Periksa koneksi internet atau link GitHub Anda.")
+    st.error("Gagal memuat data. Periksa koneksi internet atau pastikan file 'data_dummy_banjarmasin_v3.csv' sudah di-upload ke GitHub.")
     st.stop()
 
 # Logic Layer (AHP Weights)
@@ -183,11 +183,9 @@ with tab1:
     with col2:
         m = folium.Map(location=[-3.3167, 114.5901], zoom_start=13, tiles="CartoDB positron")
         
-        # Titik Aman (Hijau)
         for _, row in df_aman.iterrows():
             folium.CircleMarker(location=[row['Latitude'], row['Longitude']], radius=4, color="green", fill=True, fill_color="green", fill_opacity=0.4).add_to(m)
             
-        # Titik Rentan (Kuning/Merah)
         for _, row in df_rentan.iterrows():
             is_hotspot = row['ID_Hotspot'] >= 0
             color = "red" if is_hotspot else "orange"
